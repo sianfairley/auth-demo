@@ -14,7 +14,7 @@ Considerations for frontend and backend routes using jwt
 
 4. "checking if a user is logged in" means to check if we have an **accessToken** stored in our **localStorage**.
 
-4b. Not a bad idea to have a helper function **userIsLoggedIn()** that we can call any time we want (maybe in a separate file that we can import wherever we need)
+   4b. Not a bad idea to have a helper function **userIsLoggedIn()** that we can call any time we want (maybe in a separate file that we can import wherever we need)
 
 5. To "log a user in" means attempting a POST call to `/api/login` and (if success), STORING the token in **localStorage**
 
@@ -22,11 +22,11 @@ Considerations for frontend and backend routes using jwt
 
 7. Every server API request to a protected backend route should include the authorization token. This can be in form of an Authorization header (for example **x-access-token**) in the request
 
-7b. with fetch() this can be a bit tedious. You can check out **axios** library, which is a wrapper around fetch, and provides methods to "always include a particular header" in our AJAX calls, this way we don't have to bother in explicitly including it every time.
+   7b. with fetch() this can be a bit tedious. You can check out [Axios](https://github.com/axios/axios) library, which is a wrapper around fetch, and provides methods to "always include a particular header" in our AJAX calls, this way we don't have to bother in explicitly including it every time.
 
 8. Every time an API call returns a **401 Unauthorized**, React should LOG THE USER OUT (see point 6).
 
-8b. This means we need to check for 401 in every fetch request.. again, tedious. Once more, **axios** comes to rescue, we can add some handy "check if response is 401" as a default option (and tell it to logout the user)
+   8b. This means we need to check for 401 in every fetch request.. again, tedious. Once more, **Axios** comes to rescue, we can add some handy "check if response is 401" as a default option (and tell it to logout the user)
 
 ## Express Guards (middleware)
 
@@ -37,8 +37,8 @@ Considerations for frontend and backend routes using jwt
 ```
 /guards
    - userShouldBeLoggedIn.js
-   - petShouldExist.js
-   - petShouldBelongToUser.js
+   - todoShouldExist.js
+   - todoShouldBelongToUser.js
    - etc...
 ```
 
@@ -49,8 +49,8 @@ Think of what error codes should those be!
 
 ```javascript
 app.get(
-  "/pets/:pet**id",
-  [userShouldBeLoggedIn, petShouldExist, petShouldBelongToUser],
+  "/todos/:id",
+  [userShouldBeLoggedIn, todoShouldExist, todoShouldBelongToUser],
   function(req, res) {
     //if we get here, all middleware passed, yay! we're good to go.
     //get your todo resource and send it back to the user!
