@@ -66,6 +66,49 @@ login = () => {
 };
 ```
 
+5. Create another endpoint in the backend to test that the token is valid. For this, explain how to extract the authentication logic into a separate guard file is good for reusability. Check file `/guards/userShouldBeLoggedIn.js`
+
+```javascript
+router.get("/profile", userShouldBeLoggedIn, function(req, res, next) {
+  res.send({
+    message: "Here is the PROTECTED data for user " + req.user_id
+  });
+});
+```
+
+```javascript
+function userShouldBeLoggedIn(req, res, next) {
+  let token = req.headers["x-access-token"];
+  if (!token) {
+    res.status(401).send({ message: "please provide a token" });
+  } else {
+    jwt.verify(token, supersecret, function(err, decoded) {
+      if (err) res.status(401).send({ message: err.message });
+      else {
+        //everything is awesome
+        req.user_id = decoded.user_id;
+        next();
+      }
+    });
+  }
+}
+```
+
+6. In the frontend, create a new method to request protected data.
+
+```javascript
+requestData = () => {
+  axios("/users/profile", {
+    method: "GET",
+    headers: {
+      "x-access-token": localStorage.getItem("token")
+    }
+  })
+    .then(result => console.log(result.data.message))
+    .catch(error => console.log(error));
+};
+```
+
 Considerations for frontend and backend routes using JWT
 
 ## React (frontend) route considerations:
