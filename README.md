@@ -1,6 +1,72 @@
 # Flash lecture - Authentication using JSON Web Tokens (JWT)
 
-Considerations for frontend and backend routes using jwt
+## Instructor guide
+
+### Preparation
+
+1. Create a new full stack app with `npx express-generator` and `create-react-app`. You can use this repository as an example
+
+2. Create a database, `.env` file and run `npm run migrate` to create the users table with a `test` user.
+
+### In class
+
+#### Explanation
+
+1. Draw on the whiteboard the basic schema of communication between client and server. Explain that some routes will be protected.
+
+2. The login API route, when successful, will return a token
+
+3. The client will store this token in localStorage
+
+4. The client will pass this token along with every request to a protected API endpoint, through the `x-access-token` header
+
+5. The server will verify the token and will respond with the appropriate data, or an error if authentication failed.
+
+#### Code
+
+1. `npm install jsonwebtoken`
+
+2. Create a backend route for login. Explain the whole process.
+
+```javascript
+router.post("/login", function(req, res, next) {
+  db(
+    `SELECT id FROM users WHERE username = "${req.body.username}" AND password = "${req.body.password}"`
+  ).then(results => {
+    if (results.data[0]) {
+      const user_id = results.data[0].id;
+      var token = jwt.sign({ user_id }, supersecret);
+      res.send({ message: "Login successful, here is your token", token });
+    } else {
+      res.status(400).send({ message: "Login NOT successful" });
+    }
+  });
+});
+```
+
+3. Test this endpoint in Postman. Test it with invalid username and password, and then a valid one. Show how you get a valid token back.
+
+4. Create a frontend form to test the login. Check the `/client/src/components/Login.js`. The main function is `login()`
+
+```javascript
+login = () => {
+  axios("/users/login", {
+    method: "POST",
+    data: {
+      username: this.state.username,
+      password: this.state.password
+    }
+  })
+    .then(result => {
+      //store it locally
+      localStorage.setItem("token", result.data.token);
+      console.log(result.data.message, result.data.token);
+    })
+    .catch(error => console.log(error));
+};
+```
+
+Considerations for frontend and backend routes using JWT
 
 ## React (frontend) route considerations:
 
