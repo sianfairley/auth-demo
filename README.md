@@ -6,6 +6,7 @@
   - [Database prep](#database-prep)
   - [Dependencies](#dependencies)
   - [Development](#development)
+- [Resources](#resources)
 - [Instructor guide](#instructor-guide)
   - [Preparation](#preparation)
   - [In class](#in-class)
@@ -42,6 +43,11 @@
 - `cd client` and run `npm start` to start client server in development mode with hot reloading in port 3000.
 - Client is configured so all API calls will be proxied to port 5000 for a smoother development experience. Yay!
 - You can test your client app in `http://localhost:3000`
+
+## Resources
+
+[JWT website](https://jwt.io/)
+[jsonwebtoken NPM documentation](https://www.npmjs.com/package/jsonwebtoken)
 
 ## Instructor guide
 
