@@ -1,5 +1,46 @@
 # Flash lecture - Authentication using JSON Web Tokens (JWT)
 
+## Table of contents
+
+- [Setup](#setup)
+  - [Database prep](#database-prep)
+  - [Dependencies](#dependencies)
+  - [Development](#development)
+- [Instructor guide](#instructor-guide)
+  - [Preparation](#preparation)
+  - [In class](#in-class)
+    - [Explanation](#explanation)
+    - [Code](#code)
+
+## Setup
+
+### Database prep
+
+- Create a local MySQL database.
+- Add a `.env` to your root folder containing the MySQL authentication information for the root user as well as the name of your database. For example:
+
+```bash
+  DB_HOST=localhost
+  DB_USER=root
+  DB_PASS=YOURPASSWORD
+  DB_NAME=YOURDATABASE
+  SUPER_SECRET=shhhhhhh
+```
+
+- Run `npm run migrate` in your terminal in order to create the DB tables.
+
+### Dependencies
+
+- Run `npm install` in project directory. This will install server's project dependencies such as `express`.
+- `cd client` and run `npm install`. This will install client dependencies (React).
+
+### Development
+
+- Run `npm start` in project directory to start the Express server on port 5000
+- `cd client` and run `npm start` to start client server in development mode with hot reloading in port 3000.
+- Client is configured so all API calls will be proxied to port 5000 for a smoother development experience. Yay!
+- You can test your client app in `http://localhost:3000`
+
 ## Instructor guide
 
 ### Preparation
@@ -29,10 +70,10 @@
 2. Create a backend route for login. Explain the whole process.
 
 ```javascript
-router.post("/login", function(req, res, next) {
+router.post("/login", function (req, res, next) {
   db(
     `SELECT id FROM users WHERE username = "${req.body.username}" AND password = "${req.body.password}"`
-  ).then(results => {
+  ).then((results) => {
     if (results.data[0]) {
       const user_id = results.data[0].id;
       var token = jwt.sign({ user_id }, supersecret);
@@ -54,24 +95,24 @@ login = () => {
     method: "POST",
     data: {
       username: this.state.username,
-      password: this.state.password
-    }
+      password: this.state.password,
+    },
   })
-    .then(result => {
+    .then((result) => {
       //store it locally
       localStorage.setItem("token", result.data.token);
       console.log(result.data.message, result.data.token);
     })
-    .catch(error => console.log(error));
+    .catch((error) => console.log(error));
 };
 ```
 
 5. Create another endpoint in the backend to test that the token is valid. For this, explain how to extract the authentication logic into a separate guard file is good for reusability. Check file `/guards/userShouldBeLoggedIn.js`
 
 ```javascript
-router.get("/profile", userShouldBeLoggedIn, function(req, res, next) {
+router.get("/profile", userShouldBeLoggedIn, function (req, res, next) {
   res.send({
-    message: "Here is the PROTECTED data for user " + req.user_id
+    message: "Here is the PROTECTED data for user " + req.user_id,
   });
 });
 ```
@@ -82,7 +123,7 @@ function userShouldBeLoggedIn(req, res, next) {
   if (!token) {
     res.status(401).send({ message: "please provide a token" });
   } else {
-    jwt.verify(token, supersecret, function(err, decoded) {
+    jwt.verify(token, supersecret, function (err, decoded) {
       if (err) res.status(401).send({ message: err.message });
       else {
         //everything is awesome
@@ -101,11 +142,11 @@ requestData = () => {
   axios("/users/profile", {
     method: "GET",
     headers: {
-      "x-access-token": localStorage.getItem("token")
-    }
+      "x-access-token": localStorage.getItem("token"),
+    },
   })
-    .then(result => console.log(result.data.message))
-    .catch(error => console.log(error));
+    .then((result) => console.log(result.data.message))
+    .catch((error) => console.log(error));
 };
 ```
 
@@ -160,7 +201,7 @@ Think of what error codes should those be!
 app.get(
   "/todos/:id",
   [userShouldBeLoggedIn, todoShouldExist, todoShouldBelongToUser],
-  function(req, res) {
+  function (req, res) {
     //if we get here, all middleware passed, yay! we're good to go.
     //get your todo resource and send it back to the user!
   }
@@ -170,3 +211,5 @@ app.get(
 4. That's just one of the many possible ways of defining your middleware guards and protecting your routes. Google a bit and you'll find tons of other strategies
 
 5. Use the one that feels more natural to you! There's always more than one way to do the same thing, and all the ways are equally correct. It's just a matter of preference. Read, form an opinion and use what feels right to you and your team.
+
+_This is a project that was created at [CodeOp](http://CodeOp.tech), a full stack development bootcamp in Barcelona._
