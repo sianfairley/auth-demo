@@ -12,7 +12,7 @@
   - [In class](#in-class)
     - [Explanation](#explanation)
     - [Code](#code)
-- [React (frontend) route considerations:](#react--frontend--route-considerations-)
+- [React (frontend) route considerations:](#react--frontend--route-considerations)
 - [Express Guards (middleware)](#express-guards--middleware-)
 
 ## Setup
@@ -46,8 +46,8 @@
 
 ## Resources
 
-[JWT website](https://jwt.io/)
-[jsonwebtoken NPM documentation](https://www.npmjs.com/package/jsonwebtoken)
+- [JWT website](https://jwt.io/)
+- [jsonwebtoken NPM documentation](https://www.npmjs.com/package/jsonwebtoken)
 
 ## Instructor guide
 
@@ -160,7 +160,7 @@ requestData = () => {
 
 Considerations for frontend and backend routes using JWT
 
-## React (frontend) route considerations:
+## React (frontend) route considerations
 
 1. Some of your routes should be unprotected, some should be protected (ie the `/login` page should be unprotected and present the login form, whilst the `/todos` should be protected)
 
