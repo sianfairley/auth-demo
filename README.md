@@ -12,7 +12,7 @@
   - [In class](#in-class)
     - [Explanation](#explanation)
     - [Code](#code)
-- [React (frontend) route considerations:](#react--frontend--route-considerations)
+- [React (frontend) route considerations](#react--frontend--route-considerations)
 - [Express Guards (middleware)](#express-guards--middleware-)
 
 ## Setup
