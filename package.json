@@ -1,13 +1,13 @@
 {
-  "name": "react-express-mysql-heroku",
+  "name": "auth-jwt",
   "version": "0.0.0",
   "private": true,
   "scripts": {
     "start": "nodemon ./bin/www",
-    "migrate": "node model/database",
-    "heroku-postbuild": "cd client && npm install && npm run build"
+    "migrate": "node model/database migration.sql"
   },
   "dependencies": {
+    "bcrypt": "^5.0.0",
     "cookie-parser": "~1.4.4",
     "cors": "^2.8.5",
     "debug": "~2.6.9",
