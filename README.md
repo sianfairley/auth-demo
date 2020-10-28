@@ -17,6 +17,10 @@
 
 ## Setup
 
+```bash
+git checkout start
+```
+
 ### Database prep
 
 - Create a local MySQL database.
@@ -73,7 +77,7 @@
 
 #### Code
 
-1. `npm install jsonwebtoken`
+1. `npm install jsonwebtoken bcrypt`
 
 2. Create a backend route for login. Explain the whole process.
 
