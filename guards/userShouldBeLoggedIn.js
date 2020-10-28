@@ -7,7 +7,7 @@ function userShouldBeLoggedIn(req, res, next) {
   if (!token) {
     res.status(401).send({ message: "please provide a token" });
   } else {
-    jwt.verify(token, supersecret, function(err, decoded) {
+    jwt.verify(token, supersecret, function (err, decoded) {
       if (err) res.status(401).send({ message: err.message });
       else {
         //everything is awesome

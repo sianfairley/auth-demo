@@ -50,7 +50,7 @@ router.post("/login", async (req, res) => {
   }
 });
 
-router.get("/profile", userShouldBeLoggedIn, function (req, res, next) {
+router.get("/profile", userShouldBeLoggedIn, (req, res) => {
   res.send({
     message: "Here is the PROTECTED data for user " + req.user_id,
   });
