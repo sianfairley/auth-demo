@@ -82,18 +82,29 @@ git checkout start
 2. Create a backend route for login. Explain the whole process.
 
 ```javascript
-router.post("/login", function (req, res, next) {
-  db(
-    `SELECT id FROM users WHERE username = "${req.body.username}" AND password = "${req.body.password}"`
-  ).then((results) => {
-    if (results.data[0]) {
-      const user_id = results.data[0].id;
+router.post("/login", async (req, res) => {
+  const { username, password } = req.body;
+
+  try {
+    const results = await db(
+      `SELECT * FROM users WHERE username = "${username}"`
+    );
+    const user = results.data[0];
+    if (user) {
+      const user_id = user.id;
+
+      const correctPassword = await bcrypt.compare(password, user.password);
+
+      if (!correctPassword) throw new Error("Incorrect password");
+
       var token = jwt.sign({ user_id }, supersecret);
       res.send({ message: "Login successful, here is your token", token });
     } else {
-      res.status(400).send({ message: "Login NOT successful" });
+      throw new Error("User does not exist");
     }
-  });
+  } catch (err) {
+    res.status(400).send({ message: err.message });
+  }
 });
 ```
 
@@ -130,6 +141,10 @@ router.get("/profile", userShouldBeLoggedIn, function (req, res, next) {
 ```
 
 ```javascript
+var jwt = require("jsonwebtoken");
+require("dotenv").config();
+const supersecret = process.env.SUPER_SECRET;
+
 function userShouldBeLoggedIn(req, res, next) {
   let token = req.headers["x-access-token"];
   if (!token) {
@@ -145,6 +160,8 @@ function userShouldBeLoggedIn(req, res, next) {
     });
   }
 }
+
+module.exports = userShouldBeLoggedIn;
 ```
 
 6. In the frontend, create a new method to request protected data.
