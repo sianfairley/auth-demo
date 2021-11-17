@@ -185,6 +185,8 @@ Considerations for frontend and backend routes using JWT
    The official React Router docs have an example specifically for this, using a custom component `<PrivateRoute>`:
    https://reacttraining.com/react-router/web/example/auth-workflow
 
+   3b. A more advanced example is available at https://reactrouter.com/docs/en/v6/examples/auth. It uses the `createContext` API. Ultimately, it is the preferred way, but at this point, students don't know what the Context API is yet.
+
 4. "checking if a user is logged in" means to check if we have an **accessToken** stored in our **localStorage**.
 
    4b. Not a bad idea to have a helper function **userIsLoggedIn()** that we can call any time we want (maybe in a separate file that we can import wherever we need)
@@ -193,7 +195,7 @@ Considerations for frontend and backend routes using JWT
 
 6. To "log a user out" means to DELETE the **localStorage** token and, most likely, redirect to the login page
 
-7. Every server API request to a protected backend route should include the authorization token. This can be in form of an Authorization header (for example **x-access-token**) in the request
+7. Every server API request to a protected backend route should include the authorization token. This can be in form of an Authorization header (for example **authorization**) in the request
 
    7b. with fetch() this can be a bit tedious. You can check out [Axios](https://github.com/axios/axios) library, which is a wrapper around fetch, and provides methods to "always include a particular header" in our AJAX calls, this way we don't have to bother in explicitly including it every time.
 
