@@ -7,7 +7,7 @@
   - [Dependencies](#dependencies)
   - [Development](#development)
 - [Resources](#resources)
-- [Instructor guide](#instructor-guide)
+- [Guide](#guide)
   - [Preparation](#preparation)
   - [In class](#in-class)
     - [Explanation](#explanation)
@@ -53,17 +53,9 @@ git checkout start
 - [JWT website](https://jwt.io/)
 - [jsonwebtoken NPM documentation](https://www.npmjs.com/package/jsonwebtoken)
 
-## Instructor guide
+## Guide
 
-### Preparation
-
-1. Create a new full stack app with `npx express-generator` and `create-react-app`. You can use this repository as an example
-
-2. Create a database, `.env` file and run `npm run migrate` to create the users table with a `test` user.
-
-### In class
-
-#### Explanation
+### Explanation
 
 1. Draw on the whiteboard the basic schema of communication between client and server. Explain that some routes will be protected.
 
@@ -75,7 +67,7 @@ git checkout start
 
 5. The server will verify the token and will respond with the appropriate data, or an error if authentication failed.
 
-#### Code
+### Code
 
 1. `npm install jsonwebtoken bcrypt`
 
