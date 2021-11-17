@@ -63,7 +63,7 @@ git checkout start
 
 3. The client will store this token in localStorage
 
-4. The client will pass this token along with every request to a protected API endpoint, through the `x-access-token` header
+4. The client will pass this token along with every request to a protected API endpoint, through the `authorization` header
 
 5. The server will verify the token and will respond with the appropriate data, or an error if authentication failed.
 
