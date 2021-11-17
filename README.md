@@ -105,20 +105,19 @@ router.post("/login", async (req, res) => {
 4. Create a frontend form to test the login. Check the `/client/src/components/Login.js`. The main function is `login()`
 
 ```javascript
-login = () => {
-  axios("/users/login", {
-    method: "POST",
-    data: {
-      username: this.state.username,
-      password: this.state.password,
-    },
-  })
-    .then((result) => {
-      //store it locally
-      localStorage.setItem("token", result.data.token);
-      console.log(result.data.message, result.data.token);
-    })
-    .catch((error) => console.log(error));
+const login = async () => {
+  try {
+    const { data } = await axios("/users/login", {
+      method: "POST",
+      data: credentials,
+    });
+
+    //store it locally
+    localStorage.setItem("token", data.token);
+    console.log(data.message, data.token);
+  } catch (error) {
+    console.log(error);
+  }
 };
 ```
 
@@ -138,7 +137,7 @@ require("dotenv").config();
 const supersecret = process.env.SUPER_SECRET;
 
 function userShouldBeLoggedIn(req, res, next) {
-  let token = req.headers["x-access-token"];
+  const token = req.headers["authorization"].replace(/^Bearer\s/, "");
   if (!token) {
     res.status(401).send({ message: "please provide a token" });
   } else {
@@ -159,15 +158,18 @@ module.exports = userShouldBeLoggedIn;
 6. In the frontend, create a new method to request protected data.
 
 ```javascript
-requestData = () => {
-  axios("/users/profile", {
-    method: "GET",
-    headers: {
-      "x-access-token": localStorage.getItem("token"),
-    },
-  })
-    .then((result) => console.log(result.data.message))
-    .catch((error) => console.log(error));
+const requestData = async () => {
+  try {
+    const { data } = await axios("/users/profile", {
+      headers: {
+        authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    });
+
+    console.log(data.message);
+  } catch (error) {
+    console.log(error);
+  }
 };
 ```
 

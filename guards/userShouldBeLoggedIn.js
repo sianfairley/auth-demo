@@ -3,7 +3,8 @@ require("dotenv").config();
 const supersecret = process.env.SUPER_SECRET;
 
 function userShouldBeLoggedIn(req, res, next) {
-  let token = req.headers["x-access-token"];
+  const token = req.headers["authorization"].replace(/^Bearer\s/, "");
+
   if (!token) {
     res.status(401).send({ message: "please provide a token" });
   } else {
