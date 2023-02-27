@@ -3,6 +3,8 @@ require("dotenv").config();
 const supersecret = process.env.SUPER_SECRET;
 
 function userShouldBeLoggedIn(req, res, next) {
+  //grab the token from the authorization header
+  //removing the "Bearer " part of the string
   const token = req.headers["authorization"].replace(/^Bearer\s/, "");
 
   if (!token) {
