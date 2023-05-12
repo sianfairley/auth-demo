@@ -8,32 +8,16 @@ function Login() {
   });
   const [error, setError] = useState("");
 
-  const navigate = useNavigate();
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setCredentials({ ...credentials, [name]: value });
   };
 
   const login = async () => {
-    try {
-      let options = {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(credentials),
-      };
-      const result = await fetch("/users/login", options);
-      const data = await result.json();
-      if (!result.ok) setError(data.error);
-      else {
-        //store token locally
-        localStorage.setItem("token", data.token);
-        //redirect to private page
-        navigate("/private");
-      }
-    } catch (error) {
-      console.log(error)
-    }
+    //do the login
+    //1. send credentials to server
+    //2. get token from server and store in localStorage
+    //3. redirect user to Private Page
   };
 
   return (

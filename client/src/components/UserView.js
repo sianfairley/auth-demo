@@ -3,40 +3,27 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 function UserView() {
-  const [message, setMessage] = useState("");
-  const navigate = useNavigate();
+  const [privateData, setprivateData] = useState("");
 
-  useEffect(() => {
-    requestData();
-  }, []);
+  // get private data on page load -> useEffect()!
 
   const requestData = async () => {
-    let options = {
-      headers: {
-        authorization: "Bearer " + localStorage.getItem("token"),
-      },
-    };
-
-    try {
-      const result = await fetch("/users/private", options);
-      const data = await result.json();
-
-      if (!result.ok) setMessage(data.error);
-      else setMessage(data.message);
-
-    } catch (error) {
-      console.log(error);
-    }
+    //get private Data
+    //1. send post request including authorization header
+    //2. store response private data
+  
   };
 
   const logout = () => {
-    localStorage.removeItem("token");
-    navigate("/");
+    //do the logout
+    //1. remove token from local storage
+    //2. redirect to login page
   };
 
   return (
     <div>
-      <div>{message}</div>
+      <h2>Super private page! Here is your private message:</h2>
+      <div>{privateData}</div>
       <button className="btn btn-outline-dark ml-2" onClick={logout}>
         Log out
       </button>
