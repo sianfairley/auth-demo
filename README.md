@@ -34,12 +34,14 @@ git checkout start
   SUPER_SECRET=shhhhhhh
 ```
 
-- Run `npm run migrate` in your terminal in order to create the DB tables.
-
 ### Dependencies
 
 - Run `npm install` in project directory. This will install server's project dependencies such as `express`.
 - `cd client` and run `npm install`. This will install client dependencies (React).
+
+
+- Run `npm run migrate` in your terminal in order to create the DB tables.
+
 
 ### Development
 
