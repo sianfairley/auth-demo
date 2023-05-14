@@ -21,8 +21,8 @@ function Login() {
   };
 
   return (
-    <div>
-      <div>
+    <div className="row">
+      <div className="col-4 offset-4">
         <input
           value={credentials.username}
           onChange={handleChange}
