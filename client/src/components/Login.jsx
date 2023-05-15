@@ -15,9 +15,26 @@ function Login() {
 
   const login = async () => {
     //do the login
+
+    try {
     //1. send credentials to server
+    let options = {
+      method: "POST",
+      headers: {"Content-Type": "application/json" },
+      body: JSON.stringify(credentials)
+    }
+    const results = await fetch("/api/users/login", options);
+    const data = await results.json(); // this is my token
+    console.log(data.token);
+
     //2. get token from server and store in localStorage
+    localStorage.setItem("token", data.token);
+
     //3. redirect user to Private Page
+    } catch(err) {
+      console.log(err);
+    }
+
   };
 
   return (
