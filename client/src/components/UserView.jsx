@@ -22,8 +22,12 @@ function UserView() {
 
   return (
     <div>
-      <h2>Super private page! Here is your private message:</h2>
-      <div>{privateData}</div>
+      {error && <div>{error}</div>}
+      {privateData?.name && (
+        <div>
+          {privateData.name} {privateData.email}
+        </div>
+      )}
       <button className="btn btn-outline-dark ml-2" onClick={logout}>
         Log out
       </button>
