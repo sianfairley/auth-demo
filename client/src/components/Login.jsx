@@ -8,6 +8,8 @@ function Login() {
   });
   const [error, setError] = useState("");
 
+  const navigate = useNavigate();
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setCredentials({ ...credentials, [name]: value });
@@ -31,6 +33,8 @@ function Login() {
     localStorage.setItem("token", data.token);
 
     //3. redirect user to Private Page
+    navigate("/private");
+
     } catch(err) {
       console.log(err);
     }
