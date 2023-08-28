@@ -19,13 +19,16 @@ const supersecret = process.env.SUPER_SECRET;
 
 router.post("/register", async (req, res) => {
    //0. get user info from request body
+   let {name, username, email, password } = req.body;
 
    try {
    //1. encrypt password (⇒ `bcrypt.hash()`)
+   let encryptedPwd = await bcrypt.hash(password, saltRounds);
 
    //2. create new user on DB to store user credentials
-
+   await db(`INSERT into users (name, email, username, password) VALUES ("${name}", "${email}", "${username}", "${encryptedPwd}" );` );
    //3. respond with ok
+   res.status(200).send({message: "Registration successful"});
 
 } catch (err) {
       res.status(400).send(err);
@@ -38,27 +41,31 @@ router.post("/register", async (req, res) => {
 
 router.post("/login", async (req, res) => {
    //0. get user info from request body
+   let {username, password} = req.body;
 
    try {
    //1. check if user exists on DB
       //hint: SQL query returns an array, our user should be the first item
+      let results = await db(`SELECT * FROM users WHERE username = "${username}"`);
+      const user = results.data[0];
 
    //if user found...   
    if (user) {
       //2. check if pwd correct (compare passwords ⇒ `bcrypt.compare()`)
-
+      const isCorrect = await bcrypt.compare(password, user.password);
       //3.1 if not correct send back error message
+      if(!isCorrect) res.status(401).send({message: "Password incorrect"});
 
       //3.2 if correct create token using user id (⇒ `sign()`)
-
+      let payload = {userID: user.id};
+      const token = jwt.sign(payload, supersecret)
       //4. respond with token
-   
+      res.status(200).send({token});
    //if no user found... 
    } else {
       res.status(401).send({message: "User not found"});
    }
-
-} catch(err) {
+   } catch(err) {
       res.status(400).send(err);
    }
 
