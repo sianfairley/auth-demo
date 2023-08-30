@@ -14,7 +14,7 @@ function UserView() {
 
   const requestData = async () => {
     //0. if no token then redirect to login, don't let the user see the page
-    // even better option if we use a PrivateRoute component to not let the user enter at all
+    //TODO: even better if we block before getting in here, on Routes using PrivateRoute
     if(!localStorage.getItem("token")) navigate("/");
     
     //1. send post request including authorization header
