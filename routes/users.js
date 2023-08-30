@@ -54,7 +54,7 @@ router.post("/login", async (req, res) => {
       //2. check if pwd correct (compare passwords ⇒ `bcrypt.compare()`)
       const isCorrect = await bcrypt.compare(password, user.password);
       //3.1 if not correct send back error message
-      if(!isCorrect) res.status(401).send({message: "Password incorrect"});
+      if(!isCorrect) res.status(401).send({error: "Password incorrect"});
 
       //3.2 if correct create token using user id (⇒ `sign()`)
       let payload = {userID: user.id};
@@ -63,7 +63,7 @@ router.post("/login", async (req, res) => {
       res.status(200).send({token});
    //if no user found... 
    } else {
-      res.status(401).send({message: "User not found"});
+      res.status(401).send({error: "User not found"});
    }
    } catch(err) {
       res.status(400).send(err);
@@ -72,25 +72,44 @@ router.post("/login", async (req, res) => {
 });
 
 
-/*********  PRIVATE ROUTE FOR LOGGED IN USERS ONLY *********/
-router.get("/private", async (req, res) => {
-
-  //1. check if user logged in by extracting token
+function isUserLoggedIn(req, res, next) {
+   //1. check if user logged in by extracting token
 
   // check "authorization" header, it has the format: "Bearer <token>"
   // and split the string to get only the <token> part
-  let authHeader = req.headers["authorization"];
+   let authHeader = req.headers["authorization"];
+   let token = authHeader.split(" ")[1];
+   try {
+      //2. extract from token payload the user id (to identify logged in user)
+      let payload = jwt.verify(token, supersecret);
+      req.userID = payload.userID;
+      next();
+   } catch(err) {
+      res.status(401).send({error: "token is not correct"})
+   }
 
-  try {
-  //2. extract from token payload the user id (to identify logged in user)
-  
+}
+
+
+
+/*********  PRIVATE ROUTE FOR LOGGED IN USERS ONLY *********/
+router.get("/private", isUserLoggedIn, async (req, res) => {
+
+  try {  
+  //my user is payload.userID
+  let results = await db(`SELECT * from users WHERE id = ${req.userID}`)
   //3. respond requested data for specific user
+  res.send(results.data[0]);
 
-
-}catch(error) {
-    res.status(500).send({message: "error"});
+}catch(err) {
+    res.status(500).send(err);
   }
    
 });
+
+
+router.get("/favorites", isUserLoggedIn, async (req, res) => {
+   //select user favorites from favorites table...
+})
 
 module.exports = router;
