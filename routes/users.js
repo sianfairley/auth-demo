@@ -53,14 +53,17 @@ router.post("/login", async (req, res) => {
    if (user) {
       //2. check if pwd correct (compare passwords ⇒ `bcrypt.compare()`)
       const isCorrect = await bcrypt.compare(password, user.password);
-      //3.1 if not correct send back error message
-      if(!isCorrect) res.status(401).send({error: "Password incorrect"});
+      //3.1 if not correct send error
 
-      //3.2 if correct create token using user id (⇒ `sign()`)
-      let payload = {userID: user.id};
-      const token = jwt.sign(payload, supersecret)
-      //4. respond with token
-      res.status(200).send({token});
+      //if(!isCorrect) throw new Error("Incorrect password");
+      if(!isCorrect) res.status(401).send({error: "Incorrect Password"});
+      else {
+         //3.2 if correct create token using user id (⇒ `sign()`)
+         let payload = {userID: user.id};
+         const token = jwt.sign(payload, supersecret)
+         //4. respond with token
+         res.status(200).send({token});
+      }
    //if no user found... 
    } else {
       res.status(401).send({error: "User not found"});
@@ -72,6 +75,7 @@ router.post("/login", async (req, res) => {
 });
 
 
+// MOVE THIS TO SEPARATE FILE
 function isUserLoggedIn(req, res, next) {
    //1. check if user logged in by extracting token
 
