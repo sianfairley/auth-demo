@@ -20,19 +20,13 @@ function Login() {
 
     try {
       //1. send credentials to server
-      let options = {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(credentials),
-      };
-      const results = await fetch("/api/users/login", options);
-      const data = await results.json();
+      
       //if I got a 200 ok, then user was authorized
       if (results.ok) {
         //2. get token from server and store in localStorage
-        localStorage.setItem("token", data.token);
+      
         //3. redirect user to Private Page
-        navigate("/private");
+      
       } else {
         console.log(data);
         setError(data.error);

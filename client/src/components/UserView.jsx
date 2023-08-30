@@ -14,28 +14,18 @@ function UserView() {
 
   const requestData = async () => {
     //0. if no token then redirect to login, don't let the user see the page
-    //TODO: even better if we block before getting in here, on Routes using PrivateRoute
-    if(!localStorage.getItem("token")) navigate("/");
     
     //1. send post request including authorization header
-    let options = {
-      method: "GET",
-      headers: {"authorization": "Bearer " + localStorage.getItem("token")}
-    }
-    const results = await fetch("/api/users/private", options);
-    const data = await results.json();
 
     //2. store response private data
-    setPrivateData(data);
   };
 
   const logout = () => {
     //do the logout
 
     //1. remove token from local storage
-    localStorage.removeItem("token");
+
     //2. redirect to login page
-    navigate("/");
   };
 
   return (
