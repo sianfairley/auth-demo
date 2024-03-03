@@ -87,8 +87,4 @@ router.get("/private", async (req, res) => {
 });
 
 
-router.get("/favorites", isUserLoggedIn, async (req, res) => {
-   //select user favorites from favorites table...
-})
-
 module.exports = router;

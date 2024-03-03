@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "nodemon ./bin/www",
-    "migrate": "node model/database migration.sql"
+    "migrate": "node model/database init_db.sql"
   },
   "dependencies": {
     "bcrypt": "^5.1.0",
