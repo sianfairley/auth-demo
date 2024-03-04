@@ -27,8 +27,8 @@ router.post("/register", async (req, res) => {
    
    //3. respond with ok
 
-   
-} catch (err) {
+    
+   } catch (err) {
       res.status(400).send(err);
    }
 
@@ -44,20 +44,20 @@ router.post("/login", async (req, res) => {
    //1. check if user exists on DB
       //hint: SQL query returns an array, our user should be the first item
 
-   //if user found...   
-   if (user) {
-      //2. check if pwd correct (compare passwords ⇒ `bcrypt.compare()`)
+      //if user found...   
+      if (user) {
+         //2. check if pwd correct (compare passwords ⇒ `bcrypt.compare()`)
 
-      //3.1 if not correct send error
+         //3.1 if not correct send error
 
-      //3.2 else create token using user id (⇒ `jwt.sign()`)
+         //3.2 else create token using user id (⇒ `jwt.sign()`)
 
-      //...and respond with token
-   
-   //if no user found... 
-   } else {
-      res.status(401).send({error: "User not found"});
-   }
+         //...and respond with token
+      
+      //if no user found... 
+      } else {
+         res.status(401).send({error: "User not found"});
+      }
    } catch(err) {
       res.status(400).send(err);
    }
